@@ -38,33 +38,36 @@ module.exports = class Cart {
     });
   }
 
-  static deleteProduct(id, productPrice){
+  static deleteProduct(id, productPrice) {
     fs.readFile(p, (err, fileContent) => {
-      if(err){
+      if (err) {
         return;
       }
-      const updatedCart= { ...JSON.parse(fileContent) };
-      const product= updatedCart.products.find(prod => prod.id === id);
-      if(!product){
-        return;
+      const updatedCart = { ...JSON.parse(fileContent) };
+      const product = updatedCart.products.find(prod => prod.id === id);
+      if (!product) {
+          return;
       }
-      //console.log(product);
-      const productQty= product.qty;
-      updatedCart.products= updatedCart.products.filter(prod => prod.id !== id);
-      updatedCart.totalPrice= updatedCart.totalPrice- productPrice * productQty ;
+      const productQty = product.qty;
+      updatedCart.products = updatedCart.products.filter(
+        prod => prod.id !== id
+      );
+      updatedCart.totalPrice =
+        updatedCart.totalPrice - productPrice * productQty;
+
       fs.writeFile(p, JSON.stringify(updatedCart), err => {
         console.log(err);
       });
     });
   }
 
-  static getCart(cb){
+  static getCart(cb) {
     fs.readFile(p, (err, fileContent) => {
       const cart = JSON.parse(fileContent);
-      if(err){
+      if (err) {
         cb(null);
-      }else{
-      cb(cart);
+      } else {
+        cb(cart);
       }
     });
   }
